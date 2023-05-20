@@ -1,0 +1,20 @@
+# SourceHut Build Manifest
+image: alpine/latest
+oauth: pages.sr.ht/PAGES:RW
+packages:
+    - nodejs
+    - yarn
+    - hut
+environment:
+    site: fallout-hacking-solver.lixquid.com
+sources:
+    - https://github.com/lixquid/app-fallout-hacking-solver
+tasks:
+    - build: |
+          cd *
+          yarn install
+          yarn build
+    - package: |
+          cd */dist
+          tar czvf ../dist.tgz *
+          hut pages publish -d $site ../dist.tgz
